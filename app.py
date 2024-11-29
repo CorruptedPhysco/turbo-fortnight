@@ -1,8 +1,12 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS  # Import the CORS module
 import requests
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
+# Alternatively, specify allowed origins:
+# CORS(app, resources={r"/get-video-link": {"origins": "https://corruptedphysco.github.io"}})
 
 # Function to fetch the video link
 def get_video_link(url):
