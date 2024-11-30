@@ -26,7 +26,11 @@ def get_video_link(url):
                 start_index = script.text.find('file: "') + len('file: "')
                 end_index = script.text.find('",', start_index)
                 video_link = script.text[start_index:end_index]
-                return video_link
+                si = script.text.find("title: '") + len("title: '")
+                ei = script.text.find(" ',", si)
+                title = script.text[si:ei]
+                L = [title,video_link]
+                return L
 
         return None
     except requests.exceptions.RequestException as e:
@@ -42,11 +46,11 @@ def fetch_video_link():
     url = request.args.get('url', default_url)
 
     # Fetch the video link
-    video_link = get_video_link(url)
+    L = get_video_link(url)
 
     # Return the result as JSON
-    if video_link:
-        return jsonify({"success": True, "video_link": video_link})
+    if L:
+        return jsonify({"success": True, "video_link": L[1], "title": L[0]})
     else:
         return jsonify({"success": False, "message": "Video link not found or an error occurred."})
 
